@@ -89,6 +89,21 @@ npm run build
 ```bash
 npm run demo
 ```
+
+### Example output
+
+Real output from `npm run demo` (trimmed). Low-scoring leads are saved but never dispatched:
+
+```text
+[CRAWLER] Signal: FinScale Payments Corp (finscale.io)
+   🎯 ICP Score: 90/100 [P1_HOT]
+   🚀 Webhook Dispatched: [HTTP 200] ID: WH-55DFD8E4
+
+[CRAWLER] Signal: Artisan Corner Bakery (artisancorner.com)
+   🎯 ICP Score: 10/100 [DISQUALIFIED]
+   🛡️  [DISPATCH GUARDRAIL] Lead tier 'DISQUALIFIED' does not meet dispatch threshold.
+```
+
 Ingests mock market signals, scores high-intent FinTech companies vs disqualified local shops, applies webhook security guardrails, and renders SQLite audit tables.
 
 ### 3. Run Automated Tests

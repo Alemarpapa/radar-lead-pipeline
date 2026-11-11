@@ -1,5 +1,11 @@
 import type { RawSignal, EnrichedLead, ICPTier } from '../schemas/lead.js';
 
+// Whole-word match so "rag" does not hit "storage" and "aws" does not hit "law books".
+function hasKeyword(text: string, kw: string): boolean {
+  const escaped = kw.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`(^|[^a-z0-9])${escaped}($|[^a-z0-9])`).test(text);
+}
+
 export class AILeadEnricher {
   private static TECH_KEYWORDS: Record<string, string[]> = {
     'TypeScript / Node.js': ['typescript', 'node.js', 'nodejs', 'express', 'nestjs'],
@@ -24,7 +30,7 @@ export class AILeadEnricher {
     // 1. Detect Technologies
     const detectedTech: string[] = [];
     for (const [category, keywords] of Object.entries(AILeadEnricher.TECH_KEYWORDS)) {
-      if (keywords.some(kw => textLower.includes(kw))) {
+      if (keywords.some(kw => hasKeyword(textLower, kw))) {
         detectedTech.push(category);
       }
     }
